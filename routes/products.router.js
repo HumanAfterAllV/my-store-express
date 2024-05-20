@@ -31,4 +31,30 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.post('/', (req, res) => {
+    const body = req.body;
+    res.json({
+        message: "Created",
+        data: body
+    });
+});
+
+router.patch('/:id', (req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+    res.json({
+        message: "Created",
+        data: body,
+        id: id,
+    });
+});
+
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    res.json({
+        message: "Deleted",
+        id: id,
+    });
+});
+
 module.exports = router;

@@ -8,7 +8,7 @@ function routerApi (app)
 {
     const router = express.Router();
 
-    router.use('/api/v1', router);
+    app.use('/api/v1', router);
     router.use('/products', productsRouter);
     router.use('/about', aboutRouter);
     router.use('/categories', categoriesRouter);
