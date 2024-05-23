@@ -1,6 +1,4 @@
 const express = require("express");
-const {faker} = require('@faker-js/faker');
-
 const routerApi = require('./routes/index');
 
 const app = express();
