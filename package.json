@@ -17,6 +17,8 @@
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "@hapi/boom": "^10.0.1",
+    "joi": "^17.13.1",
     "uuid": "^9.0.1"
   }
 }
