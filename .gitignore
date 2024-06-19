@@ -165,3 +165,16 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/node,windows
+
+# Ignorar la carpeta de datos de PostgreSQL
+postgres_data/
+mysql_data/
+
+# Ignorar el archivo docker-compose.yml
+docker-compose.yml
+
+#Ignorar la carpeta libs de PostgreSQL
+libs/postgres.js
+libs/mysql.js
+
+

@@ -2,10 +2,16 @@ const { faker } = require('@faker-js/faker');
 const { v4: uuidv4 } = require('uuid');
 const {boom} = require('@hapi/boom');
 
+//const pool = require('../libs/postgres.pool');
+const sequelize = require('../libs/sequelize');
+
 class ProductService {
     constructor() {
         this.products = [];
         this.generate();
+/*         this.pool = pool;
+        this.pool.on('error', (err, client) => {
+            console.error('Unexpected error on idle client', err)}) */
     }
 
     async generate() {
@@ -31,11 +37,18 @@ class ProductService {
     }
 
     async find() {
-        return new Promise((resolve, reject) => {
+/*         const query = 'SELECT * FROM taks';
+        const rta = await this.pool.query(query);
+        return rta.rows; */
+
+        const query = 'SELECT * FROM taks';
+        const [data] = await sequelize.query(query);
+        return data;
+/*         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(this.products);
             }, 2000)
-        })
+        }) */
     }
 
     async findOne(id) {
@@ -71,7 +84,5 @@ class ProductService {
         return { id }
     }
 }
-
-module.exports = ProductService;
 
 module.exports = ProductService;
