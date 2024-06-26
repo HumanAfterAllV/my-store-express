@@ -56,7 +56,7 @@ class ProductService {
 
     async update(id, newData) {
         const product = await this.findOne(id);
-        const rta = await Product.update(newData);
+        const rta = await product.update(newData);
         return rta;
 /*         const index = this.products.findIndex((item) => item.id === id);
         if (index === -1) {

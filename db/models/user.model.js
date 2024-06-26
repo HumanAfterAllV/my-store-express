@@ -23,7 +23,7 @@ const UserSchema= {
         type:DataTypes.STRING,
         defaultValue: 'costumer'
     },
-    createdAt:{
+    createAt:{
         allowNull:false,
         type:DataTypes.DATE,
         field: 'create_at',
