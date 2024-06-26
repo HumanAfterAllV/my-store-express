@@ -1,6 +1,6 @@
 const express = require('express');
 const CategoryService = require('../services/category.service');
-const validationHandler = require('../middlewares/validationHandler');
+const validationHandler = require('../middlewares/validator.handler');
 const { createCategorySchema, updateCategorySchema, getCategorySchema } = require('../schemas/category.schema');
 
 const router = express.Router();
@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', validationHandler(getCategorySchema, 'params'), async (req, res, next) => {
     try {
         const { id } = req.params;
-        const category = await service.findById(id);
+        const category = await service.findOne(id);
         res.json(category);
     } catch (error) {
         next(error);

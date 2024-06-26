@@ -1,7 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
-const { all } = require('../../routes/categories.router');
 
-const CATEGORY_TABLE = "catogories";
+const CATEGORY_TABLE = "categories";
 
 const CategorySchema = {
     id:{
@@ -20,7 +19,7 @@ const CategorySchema = {
         allowNull: false
     },
     createAd:{
-        type: DataTypes.DATE,
+        type: DataTypes.DATE, 
         field: 'create_at',
         allowNull: false,
         defaultValue: Sequelize.NOW

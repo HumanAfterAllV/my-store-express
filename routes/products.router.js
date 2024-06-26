@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', validatorHandler(getProductSchema, 'params') ,async (req, res, next) => {
     try {
-        const { id, name } = req.params;
+        const { id } = req.params;
         const product = await service.findOne(id);
         res.json(product);
     }
@@ -30,8 +30,8 @@ router.get('/:id', validatorHandler(getProductSchema, 'params') ,async (req, res
 router.post('/', validatorHandler(createProductSchema, 'body')  ,async (req, res, next) => {
     try{
         const body = req.body;
-        const newProdcut = await service.create(body);
-        res.status(201).json(newProdcut);
+        const newProduct = await service.create(body);
+        res.status(201).json(newProduct);
     }catch (error){
         next(error);
     }
