@@ -27,7 +27,7 @@ const OrderSchema = {
         field: 'create_at',
         defaultValue: Sequelize.NOW
     },
-    total:{
+    total:{ // Only for virtual property, and not for database
         type: DataTypes.VIRTUAL,
         get(){
             if(this.items.length > 0){

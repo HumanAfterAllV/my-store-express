@@ -1,19 +1,21 @@
-const { faker } = require('@faker-js/faker');
-const { v4: uuidv4 } = require('uuid');
+/* const { faker } = require('@faker-js/faker');
+const { v4: uuidv4 } = require('uuid'); */
 const {boom} = require('@hapi/boom');
 const {models} = require('../libs/sequelize');
+const {Op} = require('sequelize');
 
 
 class ProductService {
     constructor() {
         this.products = [];
-        this.generate();
-/*         this.pool = pool;
+        //Generar products
+/*         this.generate();
+ *//*         this.pool = pool;
         this.pool.on('error', (err, client) => {
             console.error('Unexpected error on idle client', err)}) */
     }
 
-    async generate() {
+/*     async generate() {
         const limit = 100;
         for (let index = 0; index < limit; index++) {
             this.products.push({
@@ -24,7 +26,7 @@ class ProductService {
                 isBlock: faker.datatype.boolean()
             });
         }
-    }
+    } */
 
     async create(data) {
         const newProduct = await models.Product.create(data);
@@ -34,12 +36,27 @@ class ProductService {
     async find(query) {
         const options = {
             include: ['category'],
+            where: {}
         }
+        
         const {limit, offset} = query;
         if (limit && offset) {
             options.limit = limit;
             options.offset = offset;
         }
+
+        const {price} = query;
+        if (price){
+            options.where.price = price;
+        }
+        const {price_min,price_max} = query;
+        if(price_min && price_max){
+            options.where.price={
+                [Op.gte]:price_min,
+                [Op.lte]:price_max,
+            };
+        }
+
         const products = await models.Product.findAll(options);
         return products;
     }
