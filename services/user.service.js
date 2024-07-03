@@ -1,19 +1,19 @@
 const {boom} = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
-/* const getConnection = require('../libs/postgres'); */
 const { models } = require('../libs/sequelize');
-const { use } = require('react');
 
 class UserService {
-    constructor() {
-/*         this.pool = pool;
-        this.pool.on('error', (err, client) => {
-            console.error('Unexpected error on idle client', err)
-        }) */
-    };
+    constructor() {};
 
     async create(data) {
-        const newUser = await models.User.create(data);
+        const hash = await bcrypt.hash(data.password, 10);
+        const newUser = await models.User.create({
+            ...data,
+            password: hash
+        });
+
+        delete newUser.dataValues.password;
         return newUser;
     };
 
@@ -24,6 +24,14 @@ class UserService {
         
         return rta;    
     }
+
+    async findByEmail(email){
+        const rta = await models.User.findOne({
+            where: { email }
+        });
+        
+        return rta;    
+    };
 
     async findOne(id) {
         const user = await models.User.findByPk(id);
