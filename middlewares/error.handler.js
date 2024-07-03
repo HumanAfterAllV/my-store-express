@@ -1,4 +1,4 @@
-const { ValidationError, or } = require("sequelize");
+const { ValidationError } = require("sequelize");
 
 function logErrors (error, req, res, next) {
     if (error) {
