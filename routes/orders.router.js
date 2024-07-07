@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const OrderService = require('../services/order.service');
 const validatorHandler = require('../middlewares/validator.handler');
@@ -28,7 +29,7 @@ router.get('/:id', validatorHandler(getOrdersSchema, 'params'), async (req, res,
     }
 });
 
-router.post('/', validatorHandler(createOrderSchema, 'body'), async (req, res, next) => {
+router.post('/',validatorHandler(createOrderSchema, 'body'), async (req, res, next) => {
     try{
         const body = req.body;
         const newOrder = await service.create(body);
@@ -49,5 +50,6 @@ router.post('/add-item', validatorHandler(addItemSchema, 'body'), async (req, re
         next(error);
     }
 });
+
 
 module.exports = router;
