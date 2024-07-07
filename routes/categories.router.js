@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const CategoryService = require('../services/category.service');
 const validationHandler = require('../middlewares/validator.handler');
 const { createCategorySchema, updateCategorySchema, getCategorySchema } = require('../schemas/category.schema');
@@ -25,7 +26,9 @@ router.get('/:id', validationHandler(getCategorySchema, 'params'), async (req, r
     };
 });
 
-router.post('/', validationHandler(createCategorySchema), async (req, res, next) => {
+router.post('/', 
+    passport.authenticate('jwt', {session: false}),
+    validationHandler(createCategorySchema, 'body'), async (req, res, next) => {
     try {
         const body = req.body;
         const newCategory = await service.create(body);
