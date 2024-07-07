@@ -1,16 +1,17 @@
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
+
+const validationHandler = require('../middlewares/validator.handler');
+const { loginAuthSchema, recoveryAuthSchema, resetAuthSchema } = require('../schemas/auth.schema');
 
 const AuthService = require('../services/auth.service');
-
-const { config } = require('../config/config');
 
 const router = express.Router();
 const service = new AuthService();
 
 router.post('/login', 
     passport.authenticate('local', {session: false}),
+    validationHandler(loginAuthSchema, 'body'),
     async (req, res, next) => {
         try{
             const user = req.user;
@@ -22,10 +23,24 @@ router.post('/login',
 });
 
 router.post('/recovery', 
+    validationHandler(recoveryAuthSchema, 'body'),
     async (req, res, next) => {
         try{
             const { email } = req.body;
-            const rta = await service.sendEmail(email);
+            const rta = await service.sendRecovery(email);
+            res.json(rta);
+        }
+        catch(error){
+            next(error);
+    }
+});
+
+router.post('/reset-password', 
+    validationHandler(resetAuthSchema, 'body'),
+    async (req, res, next) => {
+        try{
+            const { token, newPassword } = req.body;
+            const rta = await service.sendRecovery(token, newPassword);
             res.json(rta);
         }
         catch(error){
