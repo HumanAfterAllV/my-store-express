@@ -1,12 +1,18 @@
 const express = require('express');
+const passport = require('passport');
+
 const CustomerService = require('../services/customer.service');
 const validationHandler = require('../middlewares/validator.handler');
+const { checkRoles } = require('../middlewares/auth.handler');
 const { createCustomerSchema, getCustomerSchema,updateCustomerSchema } = require('../schemas/customer.schema');
 
 const router = express.Router();
 const service = new CustomerService();
 
-router.get('/', async (req, res, next) => {
+router.get('/',
+    passport.authenticate('jwt', {session: false}),
+    checkRoles('admin'),
+    async (req, res, next) => {
     try{
         res.json(await service.find());
     }
@@ -15,7 +21,10 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.post('/', validationHandler(createCustomerSchema, 'body'), async (req, res, next) => {
+router.post('/',
+    passport.authenticate('jwt', {session: false}),
+    checkRoles('admin'),
+    validationHandler(createCustomerSchema, 'body'), async (req, res, next) => {
     try{
         const body = req.body;
         res.status(201).json(await service.create(body));
@@ -25,7 +34,10 @@ router.post('/', validationHandler(createCustomerSchema, 'body'), async (req, re
     }
 });
 
-router.patch('/:id', validationHandler(getCustomerSchema, 'params'), validationHandler(updateCustomerSchema, 'body'), async (req, res, next) => {
+router.patch('/:id',
+    passport.authenticate('jwt', {session: false}),
+    checkRoles('admin'),
+    validationHandler(getCustomerSchema, 'params'), validationHandler(updateCustomerSchema, 'body'), async (req, res, next) => {
     try{
         const { id } = req.params;
         const body = req.body;
@@ -36,7 +48,10 @@ router.patch('/:id', validationHandler(getCustomerSchema, 'params'), validationH
     }
 });
 
-router.delete('/:id',validationHandler(getCustomerSchema,'params'),async(req,res,next)=>{
+router.delete('/:id',
+    passport.authenticate('jwt', {session: false}),
+    checkRoles('admin'),
+    validationHandler(getCustomerSchema,'params'),async(req,res,next)=>{
     try{
         const{id}=req.params;
         res.status(200).json(await service.delete(id));
